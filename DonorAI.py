@@ -4,11 +4,13 @@
 #Part of the Python base package.
 import csv
 import os
+import pprint
 
 #data variables initialized for later use.
 
 #Hard coded shell dictionary.
-shell = { 'priority': '', 
+shell = {   'VANID': '',
+            'priority': '', 
             'first': '', 
             'mid': '',
             'last': '', 
@@ -30,14 +32,23 @@ shell = { 'priority': '',
             }
 
 def main():
+    #pprinter for debugging and visdualizing data usage.
+    pp = pprint.PrettyPrinter(indent=2)
+
     #List all files in the cwd.
     os.listdir('.')
     #Empty dict that will contain subdicts representing each row.
-    data_set = parse_csv('example.csv')
-    print(data_set)
+    data_set = parse_csv('Mann Volunteer Research - Taylor S.csv')
+    pp.pprint(data_set)
 
 #Method for parsing our csv files given a file name.
 def parse_csv(file_name):
+
+    """
+    Parse out all of the data in a csv file into a dictionary.
+
+    file_name - Name of the file to be parsed.
+    """
     temp_data = {}
     #initialize csv file for reading.
     csv_file = open(file_name)
