@@ -1,6 +1,7 @@
 #Unit tests
 import unittest, csv, random
 import DonorAI as ai
+import Parsing as pa
 
 class TestCSVParsing(unittest.TestCase):
 
@@ -24,7 +25,7 @@ class TestCSVParsing(unittest.TestCase):
 
         file_name - Name of the file to be checked.
         """
-        data_set = ai.parse_csv(file_name)
+        data_set = pa.DataParser().parse_csv(file_name)
         test_tup = self.get_CSV_Reader(file_name)
         #Pick a random row and iterate to it.
         row_num = random.randrange(2, 200)
