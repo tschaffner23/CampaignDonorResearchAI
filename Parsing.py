@@ -1,7 +1,7 @@
 #DataParser used by the AI
 
 #Python imports.
-#Part of the Python base package.
+#Part of the Python base modules.
 import csv
 
 #data variables initialized for later use.

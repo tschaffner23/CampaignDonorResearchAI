@@ -1,10 +1,10 @@
 #Donor AI
 
 #Python imports.
-#Part of the Python base package.
+#Part of the Python base modules.
 import csv, os, pprint
 
-#Non-base libraries and files.
+#Non-base modules
 import Parsing as pa
 
 #data variables initialized for later use.

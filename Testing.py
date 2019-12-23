@@ -1,9 +1,20 @@
 #Unit tests
+
+#Python imports.
+#Part of the Python base modules.
 import unittest, csv, random
+
+#Non-base modules.
 import DonorAI as ai
 import Parsing as pa
+import Communications as comm
+import pprint
 
 class TestCSVParsing(unittest.TestCase):
+
+    """
+    Test class for checking that CSV data parsing works properly.
+    """
 
     def get_CSV_Reader(self, file_name):
         
@@ -49,6 +60,20 @@ class TestCSVParsing(unittest.TestCase):
         self.check_random_row('volunteer_sample_4.csv')
     def test_example_file_five(self):
         self.check_random_row('volunteer_sample_5.csv')
+
+class TestURLConnection(unittest.TestCase):
+
+    """
+    Test class for checking that connecting to a url and getting
+    a cookie works properly.
+    """
+
+    def test_van(self):
+        tup = comm.WebComm().login('https://accounts.ngpvan.com/oidc/login?signin=04287350137c8df2e7ad6a9beb1755c0', 'Slark1101', 'tschaffner23@gmail.com')
+        pp = pprint.PrettyPrinter(indent=2)
+        print(tup[0])
+        print('\n')
+        print(tup[1])
 
 if __name__ == '__main__':
     unittest.main()
