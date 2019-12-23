@@ -38,7 +38,7 @@ def main():
     #List all files in the cwd.
     os.listdir('.')
     #Empty dict that will contain subdicts representing each row.
-    data_set = parse_csv('Mann Volunteer Research - Taylor S.csv')
+    data_set = parse_csv('volunteer_sample_2.csv')
     pp.pprint(data_set)
 
 #Method for parsing our csv files given a file name.
