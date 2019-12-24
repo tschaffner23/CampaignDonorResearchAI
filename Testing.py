@@ -69,11 +69,9 @@ class TestURLConnection(unittest.TestCase):
     """
 
     def test_van(self):
-        tup = comm.WebComm().login('https://accounts.ngpvan.com/oidc/login?signin=04287350137c8df2e7ad6a9beb1755c0', 'Slark1101', 'tschaffner23@gmail.com')
-        pp = pprint.PrettyPrinter(indent=2)
-        print(tup[0])
-        print('\n')
-        print(tup[1])
+        web_comm = comm.WebComm()
+        web_comm.login('https://www.texasvan.com/Login.aspx?mode=done&authType=4', 'Slark1101', 'tschaffner23@gmail.com')
+
 
 if __name__ == '__main__':
     unittest.main()
