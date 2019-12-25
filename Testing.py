@@ -7,15 +7,15 @@ import unittest, csv, random
 #Non-base modules.
 import DonorAI as ai
 import Parsing as pa
-import Communications as comm
+import Communications
 import pprint
+from webbot import Browser
 
 class TestCSVParsing(unittest.TestCase):
 
     """
     Test class for checking that CSV data parsing works properly.
     """
-
     def get_CSV_Reader(self, file_name):
         
         """
@@ -50,6 +50,7 @@ class TestCSVParsing(unittest.TestCase):
             self.assertEqual(col, entry[key])
         test_tup[0].close()
     
+    #Run the same test 5 times with different files.
     def test_example_file_one(self):
         self.check_random_row('volunteer_sample_1.csv')
     def test_example_file_two(self):
@@ -69,9 +70,11 @@ class TestURLConnection(unittest.TestCase):
     """
 
     def test_van(self):
-        web_comm = comm.WebComm()
-        web_comm.login('https://www.texasvan.com/Login.aspx?mode=done&authType=4', 'Slark1101', 'tschaffner23@gmail.com')
-
+        data_set = pa.DataParser().parse_csv('volunteer_sample_2.csv')
+        comm = Browser()
+        web_comm = Communications.WebComm()
+        web_comm.login(comm, 'https://www.texasvan.com/Login.aspx?mode=done&authType=4', 'Slark1101', 'tschaffner23@gmail.com')
+        web_comm.search(comm, 'https://www.texasvan.com/QuickLookUp.aspx', ['City'], data_set[2])
 
 if __name__ == '__main__':
     unittest.main()

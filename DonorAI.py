@@ -9,28 +9,11 @@ import Parsing as pa
 
 #data variables initialized for later use.
 
-#Hard coded shell dictionary.
-shell = {   'VANID': '',
-            'priority': '', 
-            'first': '', 
-            'mid': '',
-            'last': '', 
-            'suf': '', 
-            'address': '',
-            'address_2': '',
-            'city': '',
-            'state': '',
-            'zip_postal': '',
-            'zip4': '',
-            'country_code': '',
-            'home': '',
-            'cell': '',
-            'work': '',
-            'email': '',
-            'notes': '',
-            'occupation': '',
-            'employer': ''
-            }
+#Hard codde urls to contact.
+login_addr = 'https://www.texasvan.com/Login.aspx?mode=done&authType=4'
+search_addr = 'https://www.texasvan.com/QuickLookUp.aspx'
+#Redircts you to the lgoin page, gives you a new cookie as well!.
+redir_func = 'https://www.texasvan.com/OpenIdConnectLoginInitiator.ashx?ProviderID=4'
 
 def main():
     #pprinter for debugging and visdualizing data usage.
