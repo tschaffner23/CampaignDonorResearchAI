@@ -16,7 +16,7 @@ class WebComm():
         id_mapping - dictionary containing mappings of data_set keys
         to ids of filter boxes on the VAN search page.
         """
-        self.id_mapping = {
+        self.id_mappings = {
             'FirstName': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterFirstName',
             'LastName': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterLastName',
             'City': 'ctl00_ContentPlaceHolderVANPage_ctl00_VANInputItemFilterCity_DropDownListCity',
@@ -27,7 +27,7 @@ class WebComm():
             'Email': 'ctl00_ContentPlaceHolderVANPage_ctl00_VANInputItemFilterEmail_FilterEmail'
         }
     
-    def login(self, comm, url, password, username):
+    def login_van(self, comm, password, username):
         
         """
         Login using the given url and credentials.
@@ -36,16 +36,17 @@ class WebComm():
         password - password used to login.
         username - username used to login.
         """
-        comm.go_to(url)
-        comm.click('Log in with ActionID')
+        comm.go_to('https://www.texasvan.com/OpenIdConnectLoginInitiator.ashx?ProviderID=4')
+        #comm.click('Log in with ActionID')
         comm.type(username, into='username')
         comm.type(password, into='password')
         comm.click('Log in')
     
-    def search(self, comm, url, terms, dataset):
+    def simple_search(self, comm, url, terms, dataset):
         
         """
-        Search for a person in the search bar.
+        Search for a person using only their first and last names
+        and one other piece of info.
 
         comm - webbot Browser object that communicates with a web page.
         url - url to connect to.
@@ -58,10 +59,11 @@ class WebComm():
         first = dataset['FirstName']
         last = dataset['LastName']
         for term in terms:
-            comm.type(last, id=self.id_mapping['LastName'])
-            comm.type(first, id=self.id_mapping['FirstName'])
-            comm.type(dataset[term], id=self.id_mapping[term])
+            comm.type(last, id=self.id_mappings['LastName'])
+            comm.type(first, id=self.id_mappings['FirstName'])
+            comm.type(dataset[term], id=self.id_mappings[term])
             comm.click('Search')
+            print([ e.text for e in comm.find_elements(tag='td')])
 
 
 

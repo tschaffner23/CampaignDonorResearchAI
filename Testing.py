@@ -73,8 +73,8 @@ class TestURLConnection(unittest.TestCase):
         data_set = pa.DataParser().parse_csv('volunteer_sample_2.csv')
         comm = Browser()
         web_comm = Communications.WebComm()
-        web_comm.login(comm, 'https://www.texasvan.com/Login.aspx?mode=done&authType=4', 'Slark1101', 'tschaffner23@gmail.com')
-        web_comm.search(comm, 'https://www.texasvan.com/QuickLookUp.aspx', ['City'], data_set[2])
+        web_comm.login_van(comm, 'Slark1101', 'tschaffner23@gmail.com')
+        web_comm.simple_search(comm, 'https://www.texasvan.com/QuickLookUp.aspx', ['City'], data_set[2])
 
 if __name__ == '__main__':
     unittest.main()
