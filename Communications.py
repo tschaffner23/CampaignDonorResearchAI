@@ -1,7 +1,8 @@
-#Web communications classe(s)
+#Web communications class(es)
 
 #Python base module imports.
 from webbot import Browser
+from Verification import Verify
 
 class WebComm():
 
@@ -9,23 +10,16 @@ class WebComm():
     Class used to coomunicate with websites.
     """
 
-    def __init__(self):
+    def __init__(self, id_mappings):
         """
         Constructor for the WebComm class.
 
         id_mapping - dictionary containing mappings of data_set keys
-        to ids of filter boxes on the VAN search page.
+        to ids of filter boxes for a given website.
         """
-        self.id_mappings = {
-            'FirstName': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterFirstName',
-            'LastName': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterLastName',
-            'City': 'ctl00_ContentPlaceHolderVANPage_ctl00_VANInputItemFilterCity_DropDownListCity',
-            'Phone': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterPhone',
-            'StreetAddress': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterStreetAddress',
-            'StreetAddress_2': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterStreetAddress',
-            'Zip': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterZip',
-            'Email': 'ctl00_ContentPlaceHolderVANPage_ctl00_VANInputItemFilterEmail_FilterEmail'
-        }
+        self.id_mappings = id_mappings
+        #Pass an empty list of terms for now.
+        self.verifier = Verify([])
     
     def login_van(self, comm, password, username):
         
@@ -58,12 +52,23 @@ class WebComm():
         comm.go_to(url)
         first = dataset['FirstName']
         last = dataset['LastName']
+        confirmed_full_name = ''
+        #Search the VAN databse using the first/last name of a person
+        #and one other criteria.
         for term in terms:
             comm.type(last, id=self.id_mappings['LastName'])
             comm.type(first, id=self.id_mappings['FirstName'])
             comm.type(dataset[term], id=self.id_mappings[term])
             comm.click('Search')
-            print([ e.text for e in comm.find_elements(tag='td')])
+            #Get search results in a list.
+            results = [e.text for e in comm.find_elements(tag='td')]
+            #Check if the target person is in the results.
+            confimed_data = self.verifier.verify_person(dataset, results, 6)
+            if confimed_data is not None:
+                confirmed_full_name = confimed_data[0]
+                break
+        return confirmed_full_name
+
 
 
 

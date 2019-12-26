@@ -14,7 +14,7 @@ shell = {   'VANID': '',
             'LastName': '', 
             'Suf': '', 
             'StreetAddress': '',
-            'StreeeAddress_2': '',
+            'StreetAddress_2': '',
             'City': '',
             'State': '',
             'Zip': '',
@@ -57,6 +57,7 @@ class DataParser():
             #Fill the new shell.
             for col, key in zip(row, shell.keys()):
                 new_shell[key] = col
+            #Add new entry to the overall data_set
             temp_data[row_num] = new_shell
             row_num += 1
         csv_file.close()
