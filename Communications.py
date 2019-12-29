@@ -50,27 +50,45 @@ class WebComm():
         dataset - dictionary containing info on a specific voter.
         """
         comm.go_to(url)
-        first = dataset['FirstName']
-        last = dataset['LastName']
-        confirmed_full_name = ''
         #Search the VAN databse using the first/last name of a person
         #and one other criteria.
         for term in terms:
-            comm.type(last, id=self.id_mappings['LastName'])
-            comm.type(first, id=self.id_mappings['FirstName'])
+            #If there is no entry for the search term ignore it.
+            if dataset[term] == '':
+                continue
+            comm.type(dataset['LastName'], id=self.id_mappings['LastName'])
+            comm.type(dataset['FirstName'], id=self.id_mappings['FirstName'])
             comm.type(dataset[term], id=self.id_mappings[term])
             comm.click('Search')
             #Get search results in a list.
             results = [e.text for e in comm.find_elements(tag='td')]
             #Check if the target person is in the results.
-            confimed_data = self.verifier.verify_person(dataset, results, 6)
-            if confimed_data is not None:
-                confirmed_full_name = confimed_data[0]
-                break
-        return confirmed_full_name
+            confirmed_first_name = self.verifier.verify_person(dataset, results, 6)
+            if confirmed_first_name is not None:
+                comm.click(confirmed_first_name)
+                return comm.get_current_url()
+            #Clear search filters and search again.
+            comm.click('Clear')
+        return None
 
+    def scrape_data(self, comm, confirmed_full_name):
 
+        """
+        Scrape user dat from the VAN website. Keeping as a method for now
+        rather than a distinct class for times sake. Not particulary dynamic
+        or robust.
 
-
-
-
+        comm - webbot Browser object that communicates with a web page.
+        confirmed_full_name - full name of a confirmed target.
+        """
+        print(comm.get_current_url())
+        stuff = comm.find_elements(css_selector='#ContactsDetailsPageSectionsTab > div.row-golden > div.col-wide.ui-sortable > div:nth-child(6)', loose_match=False)
+        #/html/body/form/div[3]/div[3]/div/div[2]/div[2]/div/div[1]/div[2]/div[6]/div/div/div/div[2]/table/tbody/tr[2]
+        #ContactsDetailsPageSectionsTab > div.row-golden > div.col-wide.ui-sortable > div:nth-child(6)
+        #ContactsDetailsPageSectionsTab > div.row-golden > div.col-wide.ui-sortable > div:nth-child(6)
+        #ctl00_ContentPlaceHolderVANPage_ctl32_innerContentPanel_Phones_EIDFA1F7B1F_Content > table > tbody > tr:nth-child(2)
+        #ctl00_ContentPlaceHolderVANPage_ctl32_innerContentPanel_Phones_EIDFA1F7B1F_Content > table > tbody
+        print(stuff)
+        print('Dicks', '\n')
+        for s in stuff:
+            print(s.find_element_by_id('ctl00_ContentPlaceHolderVANPage_ctl32_ctl08_ctl01_EIDFA1F7B1FPhonesFullPhone'))

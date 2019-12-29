@@ -38,7 +38,7 @@ class Verify():
         for splice in spliced_results:
             addr = splice[1].strip()
             if addr == dataset['StreetAddress'].strip() or addr == dataset["StreetAddress_2"].strip():
-                return splice
+                return splice[0]
         return None
         
 

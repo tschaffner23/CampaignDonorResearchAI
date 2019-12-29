@@ -71,12 +71,12 @@ class TestURLConnection(unittest.TestCase):
 
     def test_van(self):
         data_set = pa.DataParser().parse_csv('volunteer_sample_2.csv')
-        comm = Browser()
+        comm = Browser(showWindow=True)
         mappings = {
             'FirstName': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterFirstName',
             'LastName': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterLastName',
             'City': 'ctl00_ContentPlaceHolderVANPage_ctl00_VANInputItemFilterCity_DropDownListCity',
-            'Phone': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterPhone',
+            'Cell': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterPhone',
             'StreetAddress': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterStreetAddress',
             'StreetAddress_2': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterStreetAddress',
             'Zip': 'ctl00_ContentPlaceHolderVANPage_ctl00_TextBoxFilterZip',
@@ -84,8 +84,12 @@ class TestURLConnection(unittest.TestCase):
         }
         web_comm = Communications.WebComm(mappings)
         web_comm.login_van(comm, 'Slark1101', 'tschaffner23@gmail.com')
-        result = web_comm.simple_search(comm, 'https://www.texasvan.com/QuickLookUp.aspx', ['City'], data_set[2])
-        self.assertEqual('Adams, William Kyle', result)
+        result = web_comm.simple_search(comm, 'https://www.texasvan.com/QuickLookUp.aspx', ['StreetAddress', 'StreetAddress_2','City'], data_set[2])
+        self.assertEqual('https://www.texasvan.com/ContactsDetails.aspx?VANID=EIDFA1F7B1F', result)
 
 if __name__ == '__main__':
     unittest.main()
+
+
+    #ctl00_ContentPlaceHolderVANPage_ctl32_ctl00_ContentPlaceHolderVANPage_ctl32_ctl00Panel
+    #ctl00_ContentPlaceHolderVANPage_ctl32_ctl00_ContentPlaceHolderVANPage_ctl32_ctl00Panel
